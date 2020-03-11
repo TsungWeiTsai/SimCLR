@@ -65,7 +65,7 @@ def parse_option():
     parser.add_argument('--lr_decay_rate', type=float, default=0.1, help='decay rate for learning rate')
     parser.add_argument('--lr_cycle', type=float, default=10, help='Cosine decay with warm restart cycle interval')
 
-    parser.add_argument('--filter_ED', type=str, default='bn,bias', help='Filter out these parameters when performing weight decay')
+    parser.add_argument('--filter_weight_decay', type=str, default='', help='Filter out these parameters when performing weight decay')
     parser.add_argument('--LARS', action='store_true', help='LARS optimizer, cannot be used with amp')
     # parser.add_argument('--warm', action='store_true', help='add linear warm-up setting')
 
@@ -114,19 +114,11 @@ def parse_option():
 
     opt = parser.parse_args()
 
-    # # set the path according to the environment
-    # if hostname.startswith('visiongpu'):
-    #     opt.data_folder = '/dev/shm/yonglong/{}'.format(opt.dataset)
-    #     opt.model_path = '/data/vision/phillipi/rep-learn/Pedesis/CMC/{}_models'.format(opt.dataset)
-    #     opt.tb_path = '/data/vision/phillipi/rep-learn/Pedesis/CMC/{}_tensorboard'.format(opt.dataset)
-    # else:
-    #     raise NotImplementedError('server invalid: {}'.format(hostname))
-
     if opt.dataset == 'imagenet':
         if 'alexnet' not in opt.model:
             opt.crop = 0.08
 
-    opt.filter_WD = opt.filter_WD.split(',')
+    opt.filter_weight_decay = opt.filter_weight_decay.split(',')
 
     iterations = opt.lr_decay_epochs.split(',')
     opt.lr_decay_epochs = list([])
@@ -386,8 +378,8 @@ def main():
 
     # Exclude BN and bias if needed
     weight_decay = args.weight_decay
-    if weight_decay and args.filter_WD:
-        parameters = add_weight_decay(model, weight_decay, [''])
+    if weight_decay and args.filter_weight_decay:
+        parameters = add_weight_decay(model, weight_decay, args.filter_weight_decay)
         weight_decay = 0.
     else:
         parameters = model.parameters()

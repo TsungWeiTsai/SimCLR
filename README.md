@@ -9,7 +9,7 @@ Currently, we support training with LARS, amp or neither of them. The commands a
 - LARS
 ```
 CUDA_VISIBLE_DEVICES=0,1 python train_simclr.py \
- --LARS --nce_t 0.5 --epoch 1000 --learning_rate 1.0 --lr_warmup 10 --batch_size 256  --num_workers 8 \ 
+ --LARS --nce_t 0.5 --epoch 1000 --learning_rate 1.0 --lr_warmup 10 --batch_size 256  --num_workers 8 --filter_weight_decay bn,bias \  
  --contrastive_model simclr --aug simple --weight_decay 1e-6 --model resnet50_cifar --dataset cifar \
  --model_path ./model_save --tb_path ./tensorboard --data_folder ./  
 ```
@@ -17,7 +17,7 @@ CUDA_VISIBLE_DEVICES=0,1 python train_simclr.py \
 - amp
 ```
 CUDA_VISIBLE_DEVICES=0,1 python train_simclr.py \
- --amp --nce_t 0.5 --epoch 1000 --learning_rate 1.0 --lr_warmup 10 --batch_size 256  --num_workers 8 \
+ --amp --nce_t 0.5 --epoch 1000 --learning_rate 1.0 --lr_warmup 10 --batch_size 256  --num_workers 8 --filter_weight_decay bn,bias \
  --contrastive_model simclr --aug simple --weight_decay 1e-6 --model resnet50_cifar --dataset cifar \
  --model_path ./model_save --tb_path ./tensorboard --data_folder ./  
 ```
@@ -25,7 +25,7 @@ CUDA_VISIBLE_DEVICES=0,1 python train_simclr.py \
 - Normal training
 ```
 CUDA_VISIBLE_DEVICES=0,1 python train_simclr.py \
- --nce_t 0.5 --epoch 1000 --learning_rate 1.0 --lr_warmup 10 --batch_size 256  --num_workers 8 \
+ --nce_t 0.5 --epoch 1000 --learning_rate 1.0 --lr_warmup 10 --batch_size 256  --num_workers 8 --filter_weight_decay bn,bias \
  --contrastive_model simclr --aug simple --weight_decay 1e-6 --model resnet50_cifar --dataset cifar \
  --model_path ./model_save --tb_path ./tensorboard --data_folder ./  
 ```
@@ -42,8 +42,8 @@ CUDA_VISIBLE_DEVICES=0,1 python train_simclr.py \
 
 ## Notice
 
-The implementation may be slightly different from the official implementation. For instance, we use the shuffle BN ([Paper](https://arxiv.org/abs/1911.05722) )instead of the Global BN trick. 
-In addition, currently, the code is tested in CIFAR-10 only. We can attain around 90% accuracy after training 1000 epochs. 
+The implementation may be slightly different from the official implementation. For instance, we use the shuffle BN ([Paper](https://arxiv.org/abs/1911.05722))instead of the Global BN trick. 
+In addition, the code is currently tested on CIFAR-10 only. We can attain around 90% accuracy after training 1000 epochs. 
 
 If you should find any mistakes in the code or better hyper-parameter settings that achieves higher accuracy, please kindly let us know or submit the pull request. Thank you.
 
