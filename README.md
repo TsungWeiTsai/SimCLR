@@ -42,7 +42,7 @@ CUDA_VISIBLE_DEVICES=0,1 python train_simclr.py \
 
 ## Notice
 
-The implementation may be slightly different from the official implementation. For instance, we use the shuffle BN ([Paper](https://arxiv.org/abs/1911.05722))instead of the Global BN trick. 
+The implementation may be slightly different from the official implementation. For instance, we use the shuffle BN([Paper](https://arxiv.org/abs/1911.05722)) instead of the Global BN trick. 
 In addition, the code is currently tested on CIFAR-10 only. We can attain around 90% accuracy after training 1000 epochs. 
 
 If you should find any mistakes in the code or better hyper-parameter settings that achieves higher accuracy, please kindly let us know or submit the pull request. Thank you.
